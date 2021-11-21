@@ -1,0 +1,78 @@
+{# {% form_theme form 'bootstrap_5_layout.html.twig' %} #}
+{# {{ dump(form.artists.vars) }} #}
+{{ form_start(form) }}
+<div class="errors">
+    {{ form_errors(form) }}
+</div>
+{{ form_row(form.title) }}
+    {{ form_row(form.compositionYear) }}
+
+<div id="artists-list" class="collection"
+     data-prototype="{{ (
+     '<tr class="collection-field" rel="__name__">'
+     ~ '<td class="artist-name">' ~ form_row(form.artists.vars.prototype) ~ '</td>'
+     ~ '<td class="operations">'
+     ~ '<button class="btn btn-sm btn-danger action-delete shadow-sm mb-3" title="'
+     ~ ('Delete.Artist' | trans) ~ '"><i class="fa fa-trash-alt"></i></button>'
+     ~ '</td>'
+     ~ '</tr>'
+     ) | e('html_attr') }}">
+    {{ form_label(form.artists) }}
+    <table style="width: 100%;">
+        <tbody>
+        {% set i = 0 %}
+        {% for artist in form.artists %}
+            <tr class="collection-field" rel="{{ i }}">
+                <td class="form">{{ form_row(artist) }}</td>
+                <td class="operations">
+                    <button class="btn btn-danger action-delete shadow-sm mb-3" title="{{ 'Delete.Artist' | trans }}">
+                        <i class="fa fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+            {% set i = i + 1 %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary action-add" data-target="#artists-list">
+        <i class="fa fa-plus"></i>
+    </button>
+
+</div>
+
+<div id="albums-list" class="collection"
+     data-prototype="{{ (
+     '<tr class="collection-field" rel="__name__">'
+     ~ '<td class="artist-name">' ~ form_row(form.albums.vars.prototype) ~ '</td>'
+     ~ '<td class="operations">'
+     ~ '<button class="btn btn-sm btn-danger action-delete shadow-sm mb-3" title="'
+     ~ ('Delete.Album' | trans) ~ '"><i class="fa fa-trash-alt"></i></button>'
+     ~ '</td>'
+     ~ '</tr>'
+     ) | e('html_attr') }}">
+    {{ form_label(form.albums) }}
+    <table style="width: 100%;">
+        <tbody>
+        {% set i = 0 %}
+        {% for album in form.albums %}
+            <tr class="collection-field" rel="{{ i }}">
+                <td class="form">{{ form_row(album) }}</td>
+                <td class="operations">
+                    <button class="btn btn-danger action-delete shadow-sm mb-3" title="{{ 'Delete.Album' | trans }}">
+                        <i class="fa fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+            {% set i = i + 1 %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary action-add" data-target="#albums-list">
+        <i class="fa fa-plus"></i>
+    </button>
+
+</div>
+
+{{ form_end(form, {'render_rest': false}) }}
