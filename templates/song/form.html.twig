@@ -2,6 +2,17 @@
 {% form_theme form 'shared/form.theme.html.twig' %}
 
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<div class="card-operations">
+    <div class="col-12 text-right">
+        <button type="submit" class="btn btn-success" title="{% trans %}Save{% endtrans %}">
+            <i class="fa fa-save"></i> {% trans %}Save{% endtrans %}
+        </button>
+        <a href="{{ path('homepage') }}" class="btn btn-dark" title="{% trans %}Cancel{% endtrans %}"><i class="fa fa-undo-alt"></i> {% trans %}Cancel{% endtrans %}
+        </a>
+    </div>
+</div>
+
 <div class="errors">
     {{ form_errors(form) }}
 </div>
@@ -15,7 +26,7 @@
      '<tr class="collection-field" rel="__name__">'
      ~ '<td class="artist-name">' ~ form_row(form.artists.vars.prototype) ~ '</td>'
      ~ '<td class="operations">'
-     ~ '<button class="btn btn-danger action-delete shadow-sm mb-3" title="'
+     ~ '<button class="btn btn-sm btn-danger action-delete shadow-sm mb-3" title="'
      ~ ('Delete.Artist' | trans) ~ '"><i class="fa fa-trash-alt"></i></button>'
      ~ '</td>'
      ~ '</tr>'
@@ -29,7 +40,7 @@
             <tr class="collection-field" rel="{{ i }}">
                 <td class="form">{{ form_row(artist) }}</td>
                 <td class="operations">
-                    <button class="btn btn-danger action-delete shadow-sm mb-3" title="{{ 'Delete.Artist' | trans }}">
+                    <button class="btn btn-sm btn-danger action-delete shadow-sm mb-3" title="{{ 'Delete.Artist' | trans }}">
                         <i class="fa fa-trash-alt"></i>
                     </button>
                 </td>
@@ -39,7 +50,7 @@
         </tbody>
     </table>
 
-    <button type="button" class="btn btn-primary action-add" data-target="#artists-list" title="{% trans %}Add.Artist{% endtrans %}">
+    <button type="button" class="btn btn-sm btn-primary action-add" data-target="#artists-list" title="{% trans %}Add.Artist{% endtrans %}">
         <i class="fa fa-plus"></i> {% trans %}Add.Artist{% endtrans %}
     </button>
 
@@ -52,7 +63,7 @@
              '<tr class="collection-field" rel="__name__">'
              ~ '<td class="album-name">' ~ form_row(form.albums.vars.prototype) ~ '</td>'
              ~ '<td class="operations">'
-             ~ '<button class="btn btn-danger action-delete shadow-sm mb-3" title="'
+             ~ '<button class="btn btn-sm btn-danger action-delete shadow-sm mb-3" title="'
              ~ ('Delete.Artist' | trans) ~ '"><i class="fa fa-trash-alt"></i></button>'
              ~ '</td>'
              ~ '</tr>'
@@ -67,7 +78,7 @@
                         <td class="form">{{ form_row(album, {attr: {readonly: true}}) }}</td>
                         <td class="operations">
                             {% if form.albums.vars.prototype is defined %}
-                            <button class="btn btn-danger action-delete shadow-sm mb-3" title="{{ 'Delete.Album' | trans }}">
+                            <button class="btn btn-sm btn-danger action-delete shadow-sm mb-3" title="{{ 'Delete.Album' | trans }}">
                                 <i class="fa fa-trash-alt"></i>
                             </button>
                             {% endif %}
@@ -79,7 +90,7 @@
             </table>
 
             {% if form.albums.vars.prototype is defined %}
-            <button type="button" class="btn btn-primary action-add" data-target="#albums-list" title="{% trans %}Add.Album{% endtrans %}">
+            <button type="button" class="btn btn-sm btn-primary action-add" data-target="#albums-list" title="{% trans %}Add.Album{% endtrans %}">
                 <i class="fa fa-plus"></i> {% trans %}Add.Album{% endtrans %}
             </button>
             {% endif %}
@@ -88,17 +99,6 @@
     {% endif %}
 </div>
 
-<div class="row mt-3 form-operations">
-    <div class="col-12 text-right">
-        <button type="submit" class="btn btn-success" title="{% trans %}Save{% endtrans %}">
-            <i class="fa fa-save"></i> {% trans %}Save{% endtrans %}
-        </button>
-        <a href="{{ path('homepage') }}" class="btn btn-dark" title="{% trans %}Cancel{% endtrans %}"><i class="fa fa-undo-alt"></i> {% trans %}Cancel{% endtrans %}
-        </a>
-    </div>
-</div>
-
 <div style="display: none;">{{ form_rest(form) }}</div>
-
 
 {{ form_end(form) }}

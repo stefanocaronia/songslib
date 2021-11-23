@@ -20,6 +20,7 @@ body {
             background-color: #5781ff !important;
             border-bottom: 1px solid #999dd9 !important;
             text-align: center;
+
             a {
                 color: #e7f1ff !important;
             }
@@ -47,12 +48,11 @@ body {
 }
 
 section.content {
-    padding: 20px 0 60px 0;
-    position: relative;
+    padding: 0.75rem 0 60px 0;
 
     h1 {
         font-size: 26px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
 
         &:before {
             font-family: "Font Awesome 5 Free";
@@ -61,23 +61,19 @@ section.content {
             padding-right: 12px;
         }
     }
+}
 
-    .index-operations {
-        position: absolute;
-        top: 7px;
-        right: 14px;
+.card {
+    position: relative;
 
+    .card-header {
+        padding: 1rem;
     }
 
-    form {
-        display: block;
-        position: relative;
-
-        .form-operations {
-            position: absolute;
-            top: -79px;
-            right: 0;
-        }
+    .card-operations {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
     }
 }
 
