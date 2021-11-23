@@ -43,6 +43,11 @@ class Album implements TimestampableInterface
      */
     private $songs;
 
+    public function __toString()
+    {
+        return $this->title;
+    }
+
     /**
      * @return Collection|Artist[
      */

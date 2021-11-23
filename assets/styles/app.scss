@@ -17,14 +17,23 @@ body {
 
     .page {
         > header {
-            background-color: #ffcd39 !important;
-            border-bottom: 1px solid #664d03 !important;
+            background-color: #5781ff !important;
+            border-bottom: 1px solid #999dd9 !important;
+            text-align: center;
+            a {
+                color: #e7f1ff !important;
+            }
         }
 
         > footer {
             background-color: #222222 !important;
             color: #999999;
         }
+    }
+
+    a:link, a:visited {
+        text-decoration: none;
+        opacity: .8;
     }
 }
 
@@ -39,10 +48,11 @@ body {
 
 section.content {
     padding: 20px 0 60px 0;
+    position: relative;
 
     h1 {
-        font-size: 30px;
-        margin-bottom: 20px;
+        font-size: 26px;
+        margin-bottom: 0px;
 
         &:before {
             font-family: "Font Awesome 5 Free";
@@ -50,7 +60,24 @@ section.content {
             content: "\f001";
             padding-right: 12px;
         }
+    }
 
+    .index-operations {
+        position: absolute;
+        top: 7px;
+        right: 14px;
+
+    }
+
+    form {
+        display: block;
+        position: relative;
+
+        .form-operations {
+            position: absolute;
+            top: -79px;
+            right: 0;
+        }
     }
 }
 
@@ -79,6 +106,7 @@ table.index {
     th, td {
         padding: 5px 10px;
         background-color: #EFEFEF;
+        color: $text-color;
 
         .btn {
             margin-bottom: 0 !important;

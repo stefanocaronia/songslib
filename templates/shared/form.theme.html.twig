@@ -11,10 +11,13 @@
                    class="form-control autocomplete-input {{ class }} autocomplete-show-all-on-focus"
                     {{ form.vars.attr.readonly is defined ? 'readonly="readonly"' : '' }} {{ form.vars.disabled ? 'disabled="disabled"' : '' }}
                     {% if form.vars.placeholder is defined %} placeholder="{{ form.vars.placeholder }}"{% endif %}
-                   data-autocomplete-field="{{ form.vars.field }}"
-                   data-autocomplete-params="{{ params | json_encode }}"
-                   data-autocomplete-url="{{ form.vars.url }}"
-                   value="{{ form.vars.entity_name }}"
+                    data-autocomplete-field="{{ form.vars.field }}"
+                    data-autocomplete-params="{{ params | json_encode }}"
+                    data-autocomplete-url="{{ form.vars.url }}"
+                    {% if form.vars.attr.readonly is defined and form.vars.attr.readonly %}
+                        readonly="readonly"
+                    {% endif %}
+                    value="{{ form.vars.entity_name }}"
             />
         </label>
     </div>

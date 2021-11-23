@@ -74,17 +74,7 @@ class SongType extends BaseFormType
     public function onPreSetData(FormEvent $event): void
     {
         $song = $event->getData();
-
-        if ($song instanceof Song) {
-            if ($song->getSingle() && $albumName = $song->getTitle()) {
-                $newAlbum = $this->addNewEntity(Album::class, 'title', $albumName);
-                foreach ($song->getAlbums() as $album) {
-                    $song->removeAlbum($album);
-                }
-                $song->addAlbum($newAlbum);
-                $event->setData($song);
-            }
-        }
+        $form = $event->getForm();
     }
 
     /**

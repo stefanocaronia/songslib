@@ -3,8 +3,14 @@
 {% block title %}{{ parent() }} - {% trans %}Edit.Song{% endtrans %}{% endblock %}
 
 {% block content %}
-    <h1>{% trans %}Edit.Song{% endtrans %}</h1>
-    {% include 'song/form.html.twig' %}
+    <div class="card">
+        <div class="card-header bg-default">
+            <h1>{% trans %}Edit.Song{% endtrans %}</h1>
+        </div>
+        <div class="card-body">
+            {% include 'song/form.html.twig' %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
