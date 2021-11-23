@@ -27,7 +27,6 @@ function inizializeFormChangeEvents() {
             success: function(html) {
                 const $albumsList = $(html).find(albumsList);
                 $(albumsList).replaceWith($albumsList);
-                initializeCollectionOperations($albumsList[0]);
                 initializeAutocomplete($albumsList[0]);
             }
         });
