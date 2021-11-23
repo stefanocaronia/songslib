@@ -1,0 +1,56 @@
+.flashbag-messages {
+    z-index: 9999;
+    text-align: center;
+    margin: auto;
+
+    .flashbag-message {
+        position: fixed;
+        bottom: 0;
+        padding: 10px 20px;
+        font-weight: normal;
+        border-radius: 8px 8px 0 0;
+        left: 50%;
+        transform: translate(-50%, 0px);
+        z-index: 9999;
+        font-size: 16px;
+
+        animation-name: appear;
+        animation-duration: .5s;
+
+        &:before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        &.flashbag-message-error {
+            background-color: #bb2d3b;
+            color: #fdfdfe;
+
+            &:before {
+                content: '\f06a';
+            }
+        }
+
+        &.flashbag-message-info,  {
+            background-color: #198754;
+            color: #fdfdfe;
+
+            &:before {
+                content: '\f05a';
+            }
+        }
+
+        &.flashbag-message-success,  {
+            background-color: #3875d7;
+            color: #fdfdfe;
+
+            &:before {
+                content: '\f05a';
+            }
+        }
+    }
+}
+
+@keyframes appear{from{bottom:-300px;opacity:0} to{bottom:0;opacity:1}}

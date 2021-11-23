@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Entity\Song;
 use App\Form\SongType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("song", name="song")
@@ -44,17 +48,22 @@ class SongController extends AbstractController
      * Song new
      * @Route("/new", name="_new")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(SongType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            $this->addFlash('success', $translator->trans('Contact.Added'));
+            $song = $form->getData();
+            $em->persist($song);
+            $song->setCreatedAt(new \DateTime());
+            $song->setUpdatedAt(new \DateTime());
+            $em->flush();
+
+            $this->addFlash('success', $translator->trans('Song.Added'));
 
             return $this->redirectToRoute('homepage');
-            // return $this->redirectToRoute('edit', ['id' => $contact->getId()]);
         }
         return $this->render('song/new.html.twig', [
             'form' => $form->createView(),
@@ -65,21 +74,44 @@ class SongController extends AbstractController
      * Song edit
      * @Route("/{id}/edit", name="_edit")
      */
-    public function edit(Request $request): Response
+    public function edit(Song $song, Request $request, EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
-        $form = $this->createForm(SongType::class);
+        if (!$song) {
+            $this->addFlash('error', $translator->trans('Song.Notfound'));
+            return $this->redirectToRoute('homepage');
+        }
+
+        $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-//            $this->addFlash('success', $translator->trans('Contact.Added'));
-
+            $em->flush();
+            $this->addFlash('success', $translator->trans('Song.Saved'));
             return $this->redirectToRoute('homepage');
-            // return $this->redirectToRoute('edit', ['id' => $contact->getId()]);
         }
-        return $this->render('songs.html.twig', [
+
+        if (!$form->isSubmitted()) {
+            $form->setData($song);
+        }
+
+        return $this->render('song/edit.html.twig', [
             'form' => $form->createView(),
-            'songs' => [],
+        ]);
+    }
+
+    /**
+     * Song delete
+     * @Route("/{id}/delete", name="_delete", methods={ "DELETE" })
+     */
+    public function delete(Song $song, Request $request, EntityManagerInterface $em, TranslatorInterface $translator): JsonResponse
+    {
+        $em->remove($song);
+        $em->flush();
+
+        $this->addFlash('success', $translator->trans('Song.Deleted'));
+
+        return new JsonResponse([
+            'success' => true,
         ]);
     }
 }

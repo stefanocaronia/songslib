@@ -1,0 +1,11 @@
+<div class="flashbag-messages">
+    {% if app.request.hasPreviousSession %}
+        {% for msgMode, flashMsgs in app.session.flashbag.all %}
+            {% for flashMsg in flashMsgs %}
+                <div class="flashbag-message flashbag-message-{{ msgMode }}" data-msg-mode="{{ msgMode }}">
+                    {{ flashMsg }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+</div>

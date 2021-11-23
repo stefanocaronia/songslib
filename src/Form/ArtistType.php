@@ -15,7 +15,7 @@ class ArtistType extends BaseFormType
 
         $builder
             ->add('name', TextType::class, [
-                'label' => @$options['embedded'] ? false : $this->translator->trans('Name'),
+                'label' => @$options['embedded']  ? false : $this->translator->trans('Name'),
                 'required' => true,
             ]);
     }

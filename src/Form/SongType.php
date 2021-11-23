@@ -5,11 +5,13 @@ namespace App\Form;
 use App\Entity\Album;
 use App\Entity\Artist;
 use App\Entity\Song;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SongType extends BaseFormType
@@ -32,25 +34,17 @@ class SongType extends BaseFormType
                 'label' => $this->translator->trans('Composition year'),
                 'choices' => $yearChoices
             ])
-//            ->add('artists', CollectionType::class, [
-//                'label' => $this->translator->trans('Artists'),
-//                'entry_type' => ArtistType::class,
-//                'entry_options' => [
-//                    'embedded' => true,
-//                ],
-//                'allow_add' => true,
-//                'allow_delete' => true,
-//                'prototype' => true,
-//            ])
+            ->add('single', CheckboxType::class, [
+                'label' => $this->translator->trans('Single'),
+            ])
             ->add('artists', CollectionType::class, [
                 'label' => $this->translator->trans('Artists'),
-                'entry_type' => EntityType::class,
+                'entry_type' => AutocompleteType::class,
                 'entry_options' => [
                     'label' => false,
                     'class' => Artist::class,
-                    'attr' => [
-                        'class' => 'entity-autocomplete',
-                    ],
+                    'route' => 'artist_ajax_list',
+                    'field' => 'name',
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -58,19 +52,80 @@ class SongType extends BaseFormType
             ])
             ->add('albums', CollectionType::class, [
                 'label' => $this->translator->trans('Albums'),
-                'entry_type' => EntityType::class,
+                'entry_type' => AutocompleteType::class,
                 'entry_options' => [
                     'label' => false,
                     'class' => Album::class,
-                    'attr' => [
-                        'class' => 'entity-autocomplete',
-                    ],
+                    'route' => 'album_ajax_list',
+                    'field' => 'title',
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-            ])
-        ;
+            ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData']);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function onPreSetData(FormEvent $event): void
+    {
+        $song = $event->getData();
+
+        if ($song instanceof Song) {
+            if ($song->getSingle() && $albumName = $song->getTitle()) {
+                $newAlbum = $this->addNewEntity(Album::class, 'title', $albumName);
+                foreach ($song->getAlbums() as $album) {
+                    $song->removeAlbum($album);
+                }
+                $song->addAlbum($newAlbum);
+                $event->setData($song);
+            }
+        }
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function onPreSubmit(FormEvent $event): void
+    {
+        $data = $event->getData();
+        $form = $event->getForm();
+
+        if (isset($data['single']) && $data['single'] == 1 && $albumName = $data['title']) {
+            $data['albums'] = [$albumName];
+            $this->addNewEntity(Album::class, 'title', $albumName);
+            $event->setData($data);
+        } else {
+            $albums = $data['albums'] ?? [];
+            foreach ($albums as $albumTitle) {
+                $this->addNewEntity(Album::class, 'title', $albumTitle);
+            }
+        }
+
+        $artists = $data['artists'] ?? [];
+        foreach ($artists as $artistName) {
+            $this->addNewEntity(Artist::class, 'name', $artistName);
+        }
+    }
+
+    private function addNewEntity(string $entityClass, string $field, string $value): object
+    {
+        $found = $this->em->getRepository($entityClass)->findOneBy([$field => $value]);
+        $newEntity = null;
+        if (!$found) {
+            $newEntity = new $entityClass();
+            $newEntity->{'set' . ucfirst($field)}($value);
+            $newEntity->setCreatedAt(new \DateTime());
+            $newEntity->setUpdatedAt(new \DateTime());
+            $this->em->persist($newEntity);
+            $this->em->flush();
+        }
+
+        return $newEntity ?? $found;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

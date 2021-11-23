@@ -9,3 +9,21 @@ Title: Title
 Composition year: Composition year
 Name: Name
 New Song: New Song
+Save: Save
+Single: Single
+
+Song.Added: Song added
+Song.Saved: Song saved
+Song.Deleted: Song deleted
+Song.Notfound: Song not found
+Edit.Song: Edit Song
+Delete.Song: Delete Song
+Add.Artist: Add Artist
+Add.Album: Add Album
+Delete.Artist: Delete Artist
+Delete.Album: Delete Album
+Operations: Operations
+Cancel: Cancel
+Created at: Created at
+Updated at: Updated at
+Are you sure: Are you sure

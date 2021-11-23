@@ -9,3 +9,21 @@ Title: Titolo
 Composition year: Anno di composizione
 Name: Nome
 New Song: Nuova canzone
+Save: Salva
+Single: Singolo
+
+Song.Added: Canzone aggiunta
+Song.Saved: Canzone salvata
+Song.Deleted: Canzone eliminata
+Song.Notfound: Canzone non trovata
+Edit.Song: Modifica canzone
+Delete.Song: Elimina canzone
+Add.Artist: Aggiungi artista
+Add.Album: Aggiungi disco
+Delete.Artist: Elimina artista
+Delete.Album: Elimina disco
+Operations: Operazioni
+Cancel: Annulla
+Created at: Creato il
+Updated at: Aggiornato il
+Are you sure: Sei sicuro

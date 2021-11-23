@@ -3,16 +3,34 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 @import '~chosen-js/chosen.css';
+@import '~@fortawesome/fontawesome-free/css/all.css';
 
 @import 'variables';
+@import 'chosen';
+@import 'flashbag';
+@import 'algolia-autocomplete';
 
 body {
     background-color: $background-color;
     color: $text-color;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    .page {
+        > header {
+            background-color: #ffcd39 !important;
+            border-bottom: 1px solid #664d03 !important;
+        }
+
+        > footer {
+            background-color: #222222 !important;
+            color: #999999;
+        }
+    }
 }
 
 .header-title {
-    font-size: 40px;
+    font-size: 48px;
+    font-weight: normal;
 
     &:link, &:visited {
         color: black;
@@ -25,6 +43,20 @@ section.content {
     h1 {
         font-size: 30px;
         margin-bottom: 20px;
+
+        &:before {
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            content: "\f001";
+            padding-right: 12px;
+        }
+
+    }
+}
+
+form {
+    label, legend {
+        font-weight: bold;
     }
 }
 
@@ -38,7 +70,55 @@ section.content {
         padding-left: 10px;
 
         button {
-            height: 32px;
+            height: 31px;
         }
     }
 }
+
+table.index {
+    th, td {
+        padding: 5px 10px;
+        background-color: #EFEFEF;
+
+        .btn {
+            margin-bottom: 0 !important;
+        }
+
+        &.operations {
+            text-align: center;
+        }
+    }
+
+}
+
+.errors {
+    margin-bottom: 10px;
+
+    div {
+        border-radius: 5px;
+        background-color: #bb2d3b;
+        color: #fdfdfe;
+        padding: 5px 10px;
+        font-weight: normal;
+
+        &:before {
+            font-family: 'Font Awesome 5 Free';
+            content: '\f06a';
+            font-weight: 900;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+    }
+}
+
+.form-check .form-check-input {
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: 10px;
+
+}
+
+/*.entity-autocomplete-value {
+    display: block !important;
+}*/

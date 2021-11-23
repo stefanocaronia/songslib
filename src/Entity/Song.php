@@ -2,16 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Timestampable\TimestampableInterface;
+use App\Entity\Timestampable\TimestampableTrait;
 use App\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SongRepository::class)
  */
-class Song
+class Song implements TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -21,6 +26,7 @@ class Song
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Inserire il titolo")
      */
     private $title;
 
@@ -35,14 +41,22 @@ class Song
     private $genre;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Artist::class, inversedBy="songs")
+     * @ORM\ManyToMany(targetEntity=Artist::class, inversedBy="songs", cascade={"persist"})
+     * @Assert\Count(min=1, minMessage="Inserire almeno un artista")
      */
     private $artists;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Album::class, inversedBy="songs")
+     * @ORM\ManyToMany(targetEntity=Album::class, inversedBy="songs", cascade={"persist"})
+     * @Assert\Count(min=1, minMessage="Inserire almeno un album")
+     * @Assert\NotBlank()
      */
     private $albums;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true, options={"default": false})
+     */
+    private $single;
 
     public function __construct()
     {
@@ -103,6 +117,7 @@ class Song
     {
         if (!$this->artists->contains($artist)) {
             $this->artists[] = $artist;
+            $artist->addSong($this);
         }
 
         return $this;
@@ -127,6 +142,7 @@ class Song
     {
         if (!$this->albums->contains($album)) {
             $this->albums[] = $album;
+            $album->addSong($this);
         }
 
         return $this;
@@ -135,6 +151,18 @@ class Song
     public function removeAlbum(Album $album): self
     {
         $this->albums->removeElement($album);
+
+        return $this;
+    }
+
+    public function getSingle(): ?bool
+    {
+        return $this->single;
+    }
+
+    public function setSingle(?bool $single): self
+    {
+        $this->single = $single;
 
         return $this;
     }

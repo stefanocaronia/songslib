@@ -1,0 +1,21 @@
+{% block autocomplete_field_widget %}
+    {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
+
+    <div class="entity-autocomplete-wrapper entity-autocomplete w-100">
+        <div class="entity-autocomplete-value" style="display: none">
+            {{ form_widget(form) }}
+        </div>
+
+        <label class="autocomplete-input-label {{ form.vars.errors.count ? 'state-error' : '' }} w-100">
+            <input type="text" name="autocompleter_{{ form.vars.full_name }}" id="autocompleter_{{ form.vars.id }}"
+                   class="form-control autocomplete-input {{ class }} autocomplete-show-all-on-focus"
+                    {{ form.vars.attr.readonly is defined ? 'readonly="readonly"' : '' }} {{ form.vars.disabled ? 'disabled="disabled"' : '' }}
+                    {% if form.vars.placeholder is defined %} placeholder="{{ form.vars.placeholder }}"{% endif %}
+                   data-autocomplete-field="{{ form.vars.field }}"
+                   data-autocomplete-params="{{ params | json_encode }}"
+                   data-autocomplete-url="{{ form.vars.url }}"
+                   value="{{ form.vars.entity_name }}"
+            />
+        </label>
+    </div>
+{% endblock autocomplete_field_widget %}
