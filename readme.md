@@ -39,7 +39,7 @@ Build database:
 
 ```bash
 ./bin/console doctrine:database:create
-./bin/console doctrine:scheema:update --force
+./bin/console doctrine:schema:update --force
 ```
 
 Build assets (dev environment):
