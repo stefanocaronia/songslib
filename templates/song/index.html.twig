@@ -17,57 +17,64 @@
         </div>
 
         <div class="card-body">
-            <table class="index table-bordered table-light w-100">
-                {% set responsive_hide_class = 'd-none d-md-table-cell' %}
-                <thead>
-                <th>{% trans %}Title{% endtrans %}</th>
-                <th>{% trans %}Composition year{% endtrans %}</th>
-                <th>{% trans %}Artists{% endtrans %}</th>
-                <th>{% trans %}Albums{% endtrans %}</th>
-                <th class="{{ responsive_hide_class }}">{% trans %}Created at{% endtrans %}</th>
-                <th class="{{ responsive_hide_class }}">{% trans %}Updated at{% endtrans %}</th>
-                <th>{% trans %}Operations{% endtrans %}</th>
-                </thead>
-                <tbody>
-                {% for song in songs %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('song_edit', {id: song.id}) }}"><i class="fas fa-music"></i> {{ song.title }}
-                            </a>
-                        </td>
-                        <td>{{ song.compositionYear }}</td>
-                        <td>
-                            {% for artist in song.artists %}
-                                <i class="fas fa-guitar"></i> {{ artist.name }}{{ loop.last ? '' : ', ' }}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for album in song.albums %}
-                                <i class="fas fa-compact-disc"></i> {{ album.title }}{{ loop.last ? '' : ', ' }}
-                            {% endfor %}
-                        </td>
-                        <td class="{{ responsive_hide_class }}">
-                            <i class="fas fa-clock"></i> {{ song.createdAt | date('d/m/Y h:i') }}
-                        </td>
-                        <td class="{{ responsive_hide_class }}">
-                            <i class="fas fa-clock"></i> {{ song.updatedAt | date('d/m/Y h:i') }}
-                        </td>
-                        <td class="operations">
-                            <a href="{{ path('song_edit', {id: song.id}) }}" class="btn btn-sm btn-success action-edit shadow-sm mb-3" title="{{ 'Edit.Song' | trans }}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <button
-                                    data-url="{{ path('song_delete', {id: song.id}) }}"
-                                    data-confirm-message="{% trans %}Are you sure{% endtrans %}?"
-                                    class="btn btn-sm btn-danger action-delete-song shadow-sm mb-3"
-                                    title="{{ 'Delete.Song' | trans }}">
-                                <i class="fa fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
+            {% if songs | length == 0 %}
+{#                <div class="alert alert-warning">#}
+                    <i class="fas fa-exclamation-circle"></i> {{ 'No.Content' | trans }}
+{#                </div>#}
+            {% else %}
+                <table class="index table-bordered table-light w-100">
+                    {% set responsive_hide_class = 'd-none d-md-table-cell' %}
+                    <thead>
+                    <th>{% trans %}Title{% endtrans %}</th>
+                    <th>{% trans %}Composition year{% endtrans %}</th>
+                    <th>{% trans %}Artists{% endtrans %}</th>
+                    <th>{% trans %}Albums{% endtrans %}</th>
+                    <th class="{{ responsive_hide_class }}">{% trans %}Created at{% endtrans %}</th>
+                    <th class="{{ responsive_hide_class }}">{% trans %}Updated at{% endtrans %}</th>
+                    <th>{% trans %}Operations{% endtrans %}</th>
+                    </thead>
+                    <tbody>
+                    {% for song in songs %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('song_edit', {id: song.id}) }}"><i class="fas fa-music"></i> {{ song.title }}
+                                </a>
+                            </td>
+                            <td>{{ song.compositionYear }}</td>
+                            <td>
+                                {% for artist in song.artists %}
+                                    <i class="fas fa-guitar"></i> {{ artist.name }}{{ loop.last ? '' : ', ' }}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for album in song.albums %}
+                                    <i class="fas fa-compact-disc"></i> {{ album.title }}{{ loop.last ? '' : ', ' }}
+                                {% endfor %}
+                            </td>
+                            <td class="{{ responsive_hide_class }}">
+                                <i class="fas fa-clock"></i> {{ song.createdAt | date('d/m/Y h:i') }}
+                            </td>
+                            <td class="{{ responsive_hide_class }}">
+                                <i class="fas fa-clock"></i> {{ song.updatedAt | date('d/m/Y h:i') }}
+                            </td>
+                            <td class="operations">
+                                <a href="{{ path('song_edit', {id: song.id}) }}" class="btn btn-sm btn-success action-edit shadow-sm mb-3" title="{{ 'Edit.Song' | trans }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <button
+                                        data-url="{{ path('song_delete', {id: song.id}) }}"
+                                        data-confirm-message="{% trans %}Are you sure{% endtrans %}?"
+                                        class="btn btn-sm btn-danger action-delete-song shadow-sm mb-3"
+                                        title="{{ 'Delete.Song' | trans }}">
+                                    <i class="fa fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

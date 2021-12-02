@@ -64,17 +64,7 @@ class SongType extends BaseFormType
                 'prototype' => true,
             ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData']);
         $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSetData(FormEvent $event): void
-    {
-        $song = $event->getData();
-        $form = $event->getForm();
     }
 
     /**
@@ -83,7 +73,6 @@ class SongType extends BaseFormType
     public function onPreSubmit(FormEvent $event): void
     {
         $data = $event->getData();
-        $form = $event->getForm();
 
         if (isset($data['single']) && $data['single'] == 1 && $albumName = $data['title']) {
             $data['albums'] = [$albumName];
